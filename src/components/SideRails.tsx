@@ -1,3 +1,5 @@
+import initialMark from '../assets/doodles/initial.png'
+
 const sectionLinks = [
   { label: 'Work', href: '#work' },
   { label: 'About', href: '#about' },
@@ -17,6 +19,12 @@ function SideRails() {
 
       <aside className="side-rail side-rail--right" aria-label="Site owner">
         <span className="side-rail__name">Allyanna Panganiban</span>
+        <img
+          className="side-rail__mark"
+          src={initialMark}
+          alt=""
+          aria-hidden="true"
+        />
       </aside>
     </>
   )

@@ -4,6 +4,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Hero from './components/Hero'
 import ShelfNav from './components/ShelfNav'
 import SideRails from './components/SideRails'
+import Skills from './components/Skills'
+import Works from './components/Works'
 
 function App() {
   useEffect(() => {
@@ -35,15 +37,8 @@ function App() {
       <main className="home">
         <Hero />
         <ShelfNav />
-        <section
-          id="work"
-          className="work-preview"
-          aria-labelledby="work-title"
-        >
-          <p className="work-preview__eyebrow">A few things I&apos;ve made</p>
-          <h2 id="work-title">Selected work</h2>
-          <p>Case studies are getting their finishing touches.</p>
-        </section>
+        <Skills />
+        <Works />
       </main>
     </>
   )
