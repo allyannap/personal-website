@@ -40,11 +40,14 @@ function ShelfNav() {
     media.add(
       '(min-width: 701px) and (prefers-reduced-motion: no-preference)',
       () => {
+        const hero = document.querySelector('.hero')
+        if (!hero) return
+
         const timeline = gsap.timeline({
           scrollTrigger: {
-            trigger: shelf,
-            start: 'top 12%',
-            end: 'top top',
+            trigger: hero,
+            start: 'bottom 28%',
+            end: 'bottom 116px',
             scrub: 0.18,
             invalidateOnRefresh: true,
           },
@@ -56,7 +59,7 @@ function ShelfNav() {
             {
               width: '100%',
               height: 56,
-              backgroundColor: '#f7f4ee',
+              backgroundColor: '#f5f5f4',
               ease: 'none',
             },
             0,

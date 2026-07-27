@@ -1,0 +1,88 @@
+import type { ReactNode } from 'react'
+import projectOne from '../assets/projects/project-one.png'
+
+export const highlightName = 'Allyanna Panganiban'
+
+export type Project = {
+  number: string
+  area: string
+  year: string
+  title: string
+  authors: string[]
+  description: ReactNode | ReactNode[]
+  tags: string[]
+  tone: string
+  image?: string
+  award?: string
+  links?: { label: string; href: string }[]
+  slug?: string
+  summary?: string
+}
+
+export const projects: Project[] = [
+  {
+    number: '01',
+    area: 'AI & Engineering',
+    year: '2026',
+    title: 'Optimizing Emergency Department Staffing Under Uncertainty',
+    authors: ['Brandon Jackson', 'Allyanna Panganiban', 'Karen Sabile'],
+    description:
+      'Developed a robust optimization model to optimize nurse staffing under uncertain patient demand, using Monte Carlo simulation and data-driven resource allocation to improve operational resilience.',
+    tags: ['Python', 'Gurobi', 'Robust Optimization', 'Monte Carlo Simulation'],
+    tone: 'blue',
+    image: projectOne,
+    links: [
+      { label: 'Code', href: 'https://github.com/allyannap/5211_final' },
+      {
+        label: 'Paper',
+        href: 'https://drive.google.com/file/d/1tzhNd-TLnPA8gQAkvAfnghfXMZAPpPIk/view?usp=sharing',
+      },
+    ],
+  },
+  {
+    number: '02',
+    area: 'AI & Engineering',
+    year: '2026',
+    title: 'Agentic AI for NYC Urban Risk Intelligence',
+    authors: ['Allyanna Panganiban', 'Louise Smith'],
+    summary:
+      "An agentic decision-support system that turns NYC's daily risk data into early-warning insights for 59 communities.",
+    description: [
+      <>
+        Built an <strong>AI decision-support</strong> system using GPT-4o and PydanticAI to
+        orchestrate seven analytical <strong>tools</strong> for <strong>autonomous</strong>{' '}
+        risk analysis.
+      </>,
+      <>
+        The agent transforms ~133K daily records per metric into early-warning insights across
+        59 NYC communities, with <strong>LLM-based model evaluation</strong> for{' '}
+        <strong>response quality</strong>.
+      </>,
+    ],
+    award: '🏆 1st Place — Cornell Systems Engineering Spring Hackathon',
+    tags: ['Agentic AI', 'LLM', 'PydanticAI', 'GPT-4o', 'PostgreSQL', 'Supabase'],
+    tone: 'violet',
+    slug: 'agentic-ai-nyc-urban-risk-intelligence',
+  },
+  {
+    number: '03',
+    area: 'AI & Engineering',
+    year: '2026',
+    title: 'Energy Burden Mapper: Multi-Agent Geospatial Intelligence',
+    authors: ['Selena Zheng', 'Allyanna Panganiban', 'Louise Smith', 'Sophie Wang'],
+    description: [
+      <>
+        Built an <strong>AI-powered energy burden platform</strong> with a{' '}
+        <strong>3-agent orchestration pipeline</strong>, <strong>tool-calling chatbot</strong>,
+        and real-time Census/Supabase data pipeline.
+      </>,
+      <>
+        Seven callable tools enable tract-level analysis and cross-county comparisons, with{' '}
+        <strong>automated validation</strong> for <strong>response accuracy</strong> and{' '}
+        <strong>hallucination detection</strong>.
+      </>,
+    ],
+    tags: ['Multi-Agent Systems', 'LLM Tool Calling', 'Python', 'Supabase'],
+    tone: 'green',
+  },
+]

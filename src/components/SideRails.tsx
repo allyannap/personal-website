@@ -1,9 +1,9 @@
 import initialMark from '../assets/doodles/initial.png'
 
 const sectionLinks = [
-  { label: 'Work', href: '#work' },
-  { label: 'About', href: '#about' },
-  { label: 'Home', href: '#home' },
+  { label: 'Work', href: '/#work' },
+  { label: 'About', href: '/#about' },
+  { label: 'Home', href: '/#home' },
 ]
 
 function SideRails() {
