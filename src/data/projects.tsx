@@ -17,6 +17,10 @@ export type Project = {
   links?: { label: string; href: string }[]
   slug?: string
   summary?: string
+  duration?: string
+  team?: { name: string; role: string }[]
+  tools?: string[]
+  focusAreas?: string[]
 }
 
 export const projects: Project[] = [
@@ -63,6 +67,17 @@ export const projects: Project[] = [
     tags: ['Agentic AI', 'LLM', 'PydanticAI', 'GPT-4o', 'PostgreSQL', 'Supabase'],
     tone: 'violet',
     slug: 'agentic-ai-nyc-urban-risk-intelligence',
+    duration: '24 hours',
+    team: [
+      { name: 'Allyanna Panganiban', role: 'Frontend Engineer' },
+      { name: 'Louise Smith', role: 'Backend Engineer' },
+    ],
+    tools: ['Python', 'Shiny', 'PydanticAI', 'GPT-4o', 'Supabase', 'PostgreSQL', 'Folium'],
+    focusAreas: ['Agentic AI', 'Decision Support', 'Data Visualization', 'Geospatial'],
+    links: [
+      { label: 'Live Demo', href: 'https://connect.systems-apps.com/nyc_risk/' },
+      { label: 'GitHub', href: 'https://github.com/louiseismith/hackathon/tree/main' },
+    ],
   },
   {
     number: '03',

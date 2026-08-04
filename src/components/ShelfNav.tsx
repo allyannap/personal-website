@@ -14,16 +14,22 @@ const socialLinks = [
     label: 'LinkedIn',
     href: 'https://www.linkedin.com/in/allyannap/',
     icon: linkedinIcon,
+    borderPath:
+      'M7 4c8-1 27 0 34 1 3 0 4 2 4 5l-1 31c0 3-2 4-5 4L8 44c-3 0-4-2-4-5L5 9c0-3 1-5 2-5Z',
   },
   {
     label: 'Instagram',
     href: 'https://www.instagram.com/allyanna',
     icon: instagramIcon,
+    borderPath:
+      'M6 5c9 0 14 1 20 0l15-1c2 1 3 3 3 6l1 30c0 3-2 5-5 5L8 44c-3 0-4-2-4-5L5 9c0-2 0-3 1-4Z',
   },
   {
     label: 'Email',
     href: 'mailto:amp388@cornell.edu',
     icon: emailIcon,
+    borderPath:
+      'M7 4c7 1 13 0 19 1l15-1c2 1 3 3 3 6l1 30c0 3-2 5-5 5L8 44c-3 0-4-2-4-5L5 9c0-3 1-4 2-5Z',
   },
 ]
 
@@ -169,7 +175,7 @@ function ShelfNav() {
       </div>
 
       <div className="shelf-nav__socials">
-        {socialLinks.map(({ label, href, icon }) => (
+        {socialLinks.map(({ label, href, icon, borderPath }) => (
           <a
             className="shelf-nav__link"
             href={href}
@@ -178,6 +184,13 @@ function ShelfNav() {
             target={href.startsWith('http') ? '_blank' : undefined}
             rel={href.startsWith('http') ? 'noreferrer' : undefined}
           >
+            <svg
+              className="shelf-nav__link-fill"
+              viewBox="0 0 48 48"
+              aria-hidden="true"
+            >
+              <path d={borderPath} />
+            </svg>
             <img src={icon} alt="" aria-hidden="true" />
           </a>
         ))}

@@ -175,7 +175,7 @@ function Works() {
                         <li key={tag}>{tag}</li>
                       ))}
                     </ul>
-                    {project.links?.length ? (
+                    {!project.slug && project.links?.length ? (
                       <div className="project-card__actions">
                         {project.links.map(({ label, href }) => (
                           <a
