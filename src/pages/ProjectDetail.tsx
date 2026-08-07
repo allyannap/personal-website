@@ -94,14 +94,13 @@ function ProjectDetail() {
       <div className="case-study-page">
         <div className="case-study__blob" aria-hidden="true" />
         <main className="case-study">
-          <Link className="case-study__back" to="/#work">
+          <Link className="case-study__back" to="/#work" aria-label="Back to work">
             <span className="case-study__back-arrow" aria-hidden="true">
               <svg viewBox="0 0 16 16">
                 <path d="M11.8 4.2 4.2 11.8" />
                 <path d="M10.2 11.8h-6v-6" />
               </svg>
             </span>
-            Back to work
           </Link>
 
           <div className="case-study__hero">

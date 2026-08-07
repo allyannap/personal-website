@@ -1,6 +1,11 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useLayoutEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { revealWordsOnScroll } from '../utils/textReveal'
 import { highlightName, projects } from '../data/projects'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const indexAreas = [
   { label: 'All projects', color: '#7a7770' },
@@ -9,7 +14,19 @@ const indexAreas = [
   { label: 'Design', color: '#65a59a' },
 ]
 
+const areaTone: Record<string, string> = {
+  'AI & Engineering': 'blue',
+  'Data Science': 'violet',
+  Design: 'green',
+}
+
 const indexYears = ['2026', '2025', '2024']
+
+function yearMatchesFilter(projectYear: string, selectedYear: string) {
+  return selectedYear === '2024'
+    ? Number(projectYear) <= 2024
+    : projectYear === selectedYear
+}
 
 function Authors({ names }: { names: string[] }) {
   return (
@@ -25,8 +42,31 @@ function Authors({ names }: { names: string[] }) {
 }
 
 function Works() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const headingRef = useRef<HTMLHeadingElement>(null)
+  const mapTitleRef = useRef<HTMLHeadingElement>(null)
+  const mapCopyRef = useRef<HTMLParagraphElement>(null)
   const [selectedArea, setSelectedArea] = useState('All projects')
   const [selectedYears, setSelectedYears] = useState<string[]>([])
+
+  useLayoutEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
+
+    const media = gsap.matchMedia()
+    const cleanups: Array<() => void> = []
+
+    media.add('(prefers-reduced-motion: no-preference)', () => {
+      if (headingRef.current) cleanups.push(revealWordsOnScroll(headingRef.current, section))
+      if (mapTitleRef.current) cleanups.push(revealWordsOnScroll(mapTitleRef.current, section))
+      if (mapCopyRef.current) cleanups.push(revealWordsOnScroll(mapCopyRef.current, section))
+    })
+
+    return () => {
+      cleanups.forEach((cleanup) => cleanup())
+      media.revert()
+    }
+  }, [])
 
   const toggleYear = (year: string) => {
     setSelectedYears((current) =>
@@ -39,19 +79,20 @@ function Works() {
   const filteredProjects = projects.filter(
     ({ area, year }) =>
       (selectedArea === 'All projects' || area === selectedArea) &&
-      (selectedYears.length === 0 || selectedYears.includes(year)),
+      (selectedYears.length === 0 ||
+        selectedYears.some((selectedYear) => yearMatchesFilter(year, selectedYear))),
   )
 
   return (
-    <section id="work" className="works" aria-labelledby="works-title">
+    <section ref={sectionRef} id="work" className="works" aria-labelledby="works-title">
       <header className="works__heading">
-        <h2 id="works-title">Works</h2>
+        <h2 ref={headingRef} id="works-title">Works</h2>
       </header>
 
       <div className="works__layout">
         <aside className="works__index" aria-label="Project filters">
-          <h3>Project map.</h3>
-          <p className="works__index-copy">
+          <h3 ref={mapTitleRef}>Project map.</h3>
+          <p ref={mapCopyRef} className="works__index-copy">
             My adventure exploring different realms within tech.
           </p>
 
@@ -90,15 +131,6 @@ function Works() {
           <div className="works__years" role="group" aria-label="Filter projects by year">
             <p className="works__index-label">By date</p>
             <div>
-              <button
-                type="button"
-                className="works__ticket"
-                aria-pressed={selectedYears.length === 0}
-                onClick={() => setSelectedYears([])}
-              >
-                <span className="works__ticket-tack" aria-hidden="true" />
-                <span className="works__ticket-label">Any year</span>
-              </button>
               {indexYears.map((year) => (
                 <button
                   type="button"
@@ -108,7 +140,9 @@ function Works() {
                   onClick={() => toggleYear(year)}
                 >
                   <span className="works__ticket-tack" aria-hidden="true" />
-                  <span className="works__ticket-label">{year}</span>
+                  <span className="works__ticket-label">
+                    {year === '2024' ? '≤ 2024' : year}
+                  </span>
                 </button>
               ))}
             </div>
@@ -124,16 +158,24 @@ function Works() {
           {filteredProjects.map((project) => {
             const cardClassName = `project-card${
               project.links?.length ? ' project-card--linked' : ''
-            }${project.slug ? ' project-card--clickable' : ''}`
+            }${project.slug || project.href ? ' project-card--clickable' : ''}`
 
             const cardContent = (
               <>
                 <div
-                  className={`project-card__visual project-card__visual--${project.tone}`}
+                  className={`project-card__visual project-card__visual--${
+                    areaTone[project.area] ?? 'blue'
+                  }`}
                   aria-hidden={!project.award ? true : undefined}
                 >
                   {project.image ? (
-                    <img className="project-card__image" src={project.image} alt="" />
+                    <img
+                      className={`project-card__image${
+                        project.imageFramed ? ' project-card__image--framed' : ''
+                      }`}
+                      src={project.image}
+                      alt=""
+                    />
                   ) : (
                     <div className="project-card__mockup">
                       <span />
@@ -149,7 +191,10 @@ function Works() {
                 <div className="project-card__content">
                   <div className="project-card__meta">
                     <span>{project.area}</span>
-                    <span className="project-card__year">/{project.year}</span>
+                    <span className="project-card__year">
+                      <i className="project-card__year-dot" aria-hidden="true" />
+                      /{project.year}
+                    </span>
                   </div>
 
                   <div
@@ -202,11 +247,29 @@ function Works() {
               </>
             )
 
-            return project.slug ? (
-              <Link className={cardClassName} key={project.number} to={`/work/${project.slug}`}>
-                {cardContent}
-              </Link>
-            ) : (
+            if (project.slug) {
+              return (
+                <Link className={cardClassName} key={project.number} to={`/work/${project.slug}`}>
+                  {cardContent}
+                </Link>
+              )
+            }
+
+            if (project.href) {
+              return (
+                <a
+                  className={cardClassName}
+                  key={project.number}
+                  href={project.href}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {cardContent}
+                </a>
+              )
+            }
+
+            return (
               <article className={cardClassName} key={project.number}>
                 {cardContent}
               </article>
@@ -214,7 +277,7 @@ function Works() {
           })}
           {filteredProjects.length === 0 && (
             <p className="works__empty">
-              No projects have landed at this stop yet. Try another route.
+              Off the map for now. Try a different filter.
             </p>
           )}
         </div>

@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { revealWordsOnScroll } from '../utils/textReveal'
 import friendsPhoto from '../assets/photos/friends.jpg'
 import gradPhoto from '../assets/photos/grad.jpg'
 import slopePhoto from '../assets/photos/slope.jpg'
@@ -11,6 +12,9 @@ gsap.registerPlugin(ScrollTrigger)
 function Hero() {
   const heroRef = useRef<HTMLElement>(null)
   const photosRef = useRef<HTMLDivElement>(null)
+  const eyebrowRef = useRef<HTMLParagraphElement>(null)
+  const titleRef = useRef<HTMLHeadingElement>(null)
+  const bioRef = useRef<HTMLParagraphElement>(null)
 
   useLayoutEffect(() => {
     const hero = heroRef.current
@@ -18,6 +22,7 @@ function Hero() {
     if (!hero || !photos) return
 
     const media = gsap.matchMedia()
+    const cleanups: Array<() => void> = []
 
     media.add('(prefers-reduced-motion: no-preference)', () => {
       gsap.to(photos, {
@@ -30,9 +35,16 @@ function Hero() {
           scrub: 0.5,
         },
       })
+
+      if (eyebrowRef.current) cleanups.push(revealWordsOnScroll(eyebrowRef.current, hero))
+      if (titleRef.current) cleanups.push(revealWordsOnScroll(titleRef.current, hero))
+      if (bioRef.current) cleanups.push(revealWordsOnScroll(bioRef.current, hero))
     })
 
-    return () => media.revert()
+    return () => {
+      cleanups.forEach((cleanup) => cleanup())
+      media.revert()
+    }
   }, [])
 
   return (
@@ -44,9 +56,9 @@ function Hero() {
     >
       <div className="hero__canvas">
         <div id="about" className="hero__intro">
-          <p className="hero__eyebrow">Hi, I&apos;m</p>
-          <h1 id="hero-title">Allyanna</h1>
-          <p className="hero__bio">
+          <p ref={eyebrowRef} className="hero__eyebrow">Hi, I&apos;m</p>
+          <h1 ref={titleRef} id="hero-title">Allyanna</h1>
+          <p ref={bioRef} className="hero__bio">
             I build <span className="hero__keyword--blue">agentic systems</span>{' '}
             at the intersection of{' '}
             <span className="hero__keyword--gray">AI</span>,{' '}

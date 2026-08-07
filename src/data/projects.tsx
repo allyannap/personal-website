@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
 import projectOne from '../assets/projects/project-one.png'
+import crashSeverity from '../assets/projects/crash-severity.png'
+import strokePrediction from '../assets/projects/stroke-prediction.png'
 
 export const highlightName = 'Allyanna Panganiban'
 
@@ -11,10 +13,11 @@ export type Project = {
   authors: string[]
   description: ReactNode | ReactNode[]
   tags: string[]
-  tone: string
   image?: string
+  imageFramed?: boolean
   award?: string
   links?: { label: string; href: string }[]
+  href?: string
   slug?: string
   summary?: string
   duration?: string
@@ -30,10 +33,14 @@ export const projects: Project[] = [
     year: '2026',
     title: 'Optimizing Emergency Department Staffing Under Uncertainty',
     authors: ['Brandon Jackson', 'Allyanna Panganiban', 'Karen Sabile'],
-    description:
-      'Developed a robust optimization model to optimize nurse staffing under uncertain patient demand, using Monte Carlo simulation and data-driven resource allocation to improve operational resilience.',
+    description: (
+      <>
+        Developed a robust optimization model to optimize nurse staffing under{' '}
+        <strong>uncertain patient demand</strong>, using Monte Carlo simulation and
+        data-driven resource allocation to improve operational resilience.
+      </>
+    ),
     tags: ['Python', 'Gurobi', 'Robust Optimization', 'Monte Carlo Simulation'],
-    tone: 'blue',
     image: projectOne,
     links: [
       { label: 'Code', href: 'https://github.com/allyannap/5211_final' },
@@ -65,7 +72,6 @@ export const projects: Project[] = [
     ],
     award: '🏆 1st Place — Cornell Systems Engineering Spring Hackathon',
     tags: ['Agentic AI', 'LLM', 'PydanticAI', 'GPT-4o', 'PostgreSQL', 'Supabase'],
-    tone: 'violet',
     slug: 'agentic-ai-nyc-urban-risk-intelligence',
     duration: '24 hours',
     team: [
@@ -98,6 +104,76 @@ export const projects: Project[] = [
       </>,
     ],
     tags: ['Multi-Agent Systems', 'LLM Tool Calling', 'Python', 'Supabase'],
-    tone: 'green',
+  },
+  {
+    number: '04',
+    area: 'Data Science',
+    year: '2025',
+    title: 'Adventura: Park Recommendation System',
+    authors: [
+      'Caitlyn Jin',
+      'Sophia Pan',
+      'Allyanna Panganiban',
+      'Karen Sabile',
+      'Amanda Yongvanich',
+    ],
+    description: [
+      <>
+        Built an <strong>information retrieval</strong> system that recommends amusement parks
+        matched to a user's ideal experience, using <strong>TF-IDF</strong>,{' '}
+        <strong>cosine similarity</strong>,
+        and <strong>SVD</strong> for <strong>latent semantic</strong> matching.
+      </>,
+      <>
+        Combines web-scraped park data with Google-sourced reviews across hundreds of U.S.
+        parks, ranking results by relevance to open-ended natural language{' '}
+        <strong>ad-hoc queries</strong>.
+      </>,
+    ],
+    tags: ['Python', 'Information Retrieval', 'TF-IDF', 'Cosine Similarity', 'SVD'],
+  },
+  {
+    number: '05',
+    area: 'Data Science',
+    year: '2025',
+    title: 'Factors of Crash Severity in the U.S.',
+    authors: ['Alexandra Jane Orantia', 'Allyanna Panganiban', 'Max Castanon', 'Sam Friedman'],
+    description: 'wip',
+    tags: [],
+    image: crashSeverity,
+    imageFramed: true,
+    links: [
+      {
+        label: 'Paper',
+        href: 'https://drive.google.com/file/d/1iFvPtnjAj9iyTG2_H-jCizmqohuZ_2iH/view?usp=sharing',
+      },
+    ],
+  },
+  {
+    number: '06',
+    area: 'Design',
+    year: '2023',
+    title: 'BeReal Case Study',
+    authors: ['Allyanna Panganiban'],
+    description: (
+      <>
+        Researched user needs, designed fidelity flows, and prototyped a tag user feature on
+        BeReal (<strong>prior</strong> to BeReal's tag user feature release 1.19.1) to promote
+        user interaction and build deeper connections with memory-sharing.
+      </>
+    ),
+    tags: [],
+  },
+  {
+    number: '07',
+    area: 'Data Science',
+    year: '2022',
+    title: 'Stroke Analysis and Prediction',
+    authors: ['Allyanna Panganiban'],
+    description: 'wip',
+    tags: [],
+    image: strokePrediction,
+    imageFramed: true,
+    href: 'https://drive.google.com/file/d/1L15p84rYNv6s7l2uXGsyzySz_ZMWm2-u/view?usp=sharing',
   },
 ]

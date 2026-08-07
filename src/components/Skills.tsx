@@ -1,9 +1,9 @@
 import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { revealItemsOnScroll, revealWordsOnScroll } from '../utils/textReveal'
 import selfPortrait from '../assets/doodles/self-portrait.png'
 import cornellSeal from '../assets/doodles/cornell-seal.png'
-import campusPhoto from '../assets/photos/campus.jpg'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -53,20 +53,20 @@ const skillGroups = [
 function Skills() {
   const sectionRef = useRef<HTMLElement>(null)
   const introRef = useRef<HTMLDivElement>(null)
+  const titleRef = useRef<HTMLHeadingElement>(null)
   const gridRef = useRef<HTMLDivElement>(null)
-  const campusShiftRef = useRef<HTMLDivElement>(null)
 
   useLayoutEffect(() => {
     const section = sectionRef.current
     const intro = introRef.current
     const grid = gridRef.current
-    const campusShift = campusShiftRef.current
-    if (!section || !intro || !grid || !campusShift) return
+    if (!section || !intro || !grid) return
 
     const media = gsap.matchMedia()
+    const cleanups: Array<() => void> = []
 
     media.add('(prefers-reduced-motion: no-preference)', () => {
-      gsap.to([intro, grid, campusShift], {
+      gsap.to([intro, grid], {
         y: -72,
         ease: 'none',
         scrollTrigger: {
@@ -76,9 +76,19 @@ function Skills() {
           scrub: 0.5,
         },
       })
+
+      if (titleRef.current) cleanups.push(revealWordsOnScroll(titleRef.current, section))
+
+      grid.querySelectorAll('.skills__group').forEach((group) => {
+        const items = Array.from(group.querySelectorAll('.skills__item'))
+        cleanups.push(revealItemsOnScroll(items, group))
+      })
     })
 
-    return () => media.revert()
+    return () => {
+      cleanups.forEach((cleanup) => cleanup())
+      media.revert()
+    }
   }, [])
 
   return (
@@ -88,13 +98,28 @@ function Skills() {
       aria-labelledby="skills-title"
     >
       <div ref={introRef} className="skills__intro">
-        <h2 id="skills-title">Skills</h2>
-        <img
-          className="skills__portrait"
-          src={selfPortrait}
-          alt=""
-          aria-hidden="true"
-        />
+        <h2 ref={titleRef} id="skills-title">Skills</h2>
+        <span className="skills__portrait-wrap" aria-hidden="true">
+          <img className="skills__portrait" src={selfPortrait} alt="" />
+        </span>
+
+        <div className="skills__notes" aria-hidden="true">
+          <div className="skills__paper-note">
+            <span className="skills__tape skills__tape--top" />
+            <svg viewBox="0 0 180 110">
+              <path d="M18 85c-16-14 4-27 14-8 8 16-12 21-17 4-7-25 12-53 35-48 25 5 17 44 2 41-19-4-12-55 16-57 31-2 29 51 7 50-25-1-19-58 11-60 33-2 35 48 12 53-22 5-23-33 2-40 19-6 30 5 38 17" />
+            </svg>
+            <span className="skills__tape skills__tape--corner" />
+          </div>
+          <span className="skills__sticky skills__sticky--yellow" />
+          <div className="skills__sticky skills__sticky--blue">
+            <img
+              className="skills__sticky-cornell"
+              src={cornellSeal}
+              alt=""
+            />
+          </div>
+        </div>
       </div>
 
       <div ref={gridRef} className="skills__grid">
@@ -108,29 +133,8 @@ function Skills() {
                 </li>
               ))}
             </ul>
-            {title === 'Engineering & Tools' ? (
-              <div className="skills__notes" aria-hidden="true">
-                <div className="skills__paper-note">
-                  <span className="skills__tape skills__tape--top" />
-                  <svg viewBox="0 0 180 110">
-                    <path d="M18 85c-16-14 4-27 14-8 8 16-12 21-17 4-7-25 12-53 35-48 25 5 17 44 2 41-19-4-12-55 16-57 31-2 29 51 7 50-25-1-19-58 11-60 33-2 35 48 12 53-22 5-23-33 2-40 19-6 30 5 38 17" />
-                  </svg>
-                  <span className="skills__tape skills__tape--corner" />
-                </div>
-                <span className="skills__sticky skills__sticky--yellow" />
-                <div className="skills__sticky skills__sticky--blue">
-                  <img src={cornellSeal} alt="" />
-                </div>
-              </div>
-            ) : null}
           </div>
         ))}
-      </div>
-
-      <div ref={campusShiftRef} className="skills__campus-shift" aria-hidden="true">
-        <figure className="skills__campus">
-          <img src={campusPhoto} alt="" />
-        </figure>
       </div>
     </section>
   )
