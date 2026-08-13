@@ -138,8 +138,9 @@ export const projects: Project[] = [
     year: '2025',
     title: 'Factors of Crash Severity in the U.S.',
     authors: ['Alexandra Jane Orantia', 'Allyanna Panganiban', 'Max Castanon', 'Sam Friedman'],
-    description: 'wip',
-    tags: [],
+    description:
+      'Analyzed over 800,000 U.S. traffic accidents to uncover the environmental and infrastructure factors most associated with crash severity using machine learning and statistical modeling.',
+    tags: ['Machine Learning', 'Predictive Analytics', 'Transportation', 'Data Visualization'],
     image: crashSeverity,
     imageFramed: true,
     links: [
@@ -170,8 +171,9 @@ export const projects: Project[] = [
     year: '2022',
     title: 'Stroke Analysis and Prediction',
     authors: ['Allyanna Panganiban'],
-    description: 'wip',
-    tags: [],
+    description:
+      'Conducted exploratory data analysis (EDA) to uncover relationships between patient health factors and stroke risk, preprocessed and analyzed clinical data, and developed a neural network model to predict stroke outcomes.',
+    tags: ['Healthcare', 'Machine Learning', 'Predictive Modeling', 'Exploratory Data Analysis'],
     image: strokePrediction,
     imageFramed: true,
     href: 'https://drive.google.com/file/d/1L15p84rYNv6s7l2uXGsyzySz_ZMWm2-u/view?usp=sharing',
